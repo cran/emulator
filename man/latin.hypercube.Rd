@@ -7,11 +7,12 @@
   was generated using \code{latin.hypercube()}.
 }
 \usage{
-latin.hypercube(n, d, normalize=FALSE)
+latin.hypercube(n, d, names=NULL, normalize=FALSE)
 }
 \arguments{
   \item{n}{Number of points}
   \item{d}{Number of dimensions}
+  \item{names}{Character vector for column names (optional)}
   \item{normalize}{Boolean variable with \code{TRUE} meaning to
     normalize each column so the minimum is zero and the maximum is
     one.  If it takes its default \code{FALSE}, the points represent

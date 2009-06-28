@@ -148,7 +148,7 @@ function (val, A, d, scales = NULL, pos.def.matrix = NULL, func=regressor.basis)
         Ainv.oneshort <- solve(A.oneshort)
         d.missing.estimated[i] <- interpolant(val.missing, d.oneshort, 
             val.oneshort, Ainv = Ainv.oneshort, scales = scales, 
-            pos.def.matrix = pos.def.matrix, func=func, g = TRUE)$mstar.star
+            pos.def.matrix = pos.def.matrix, func=func, give.full.list = TRUE)$mstar.star
     }
     return(d.missing.estimated)
 }
@@ -342,7 +342,7 @@ jj.sigma <- var.conditional(x, xold, d, A, Ainv, scales = scales, pos.def.matrix
 }
 
 "latin.hypercube" <-
-function (n, d, normalize = FALSE) 
+function (n, d, names=NULL, normalize = FALSE) 
 {
     if (normalize) {
         f <- function(...) {
@@ -354,7 +354,9 @@ function (n, d, normalize = FALSE)
             (sample(1:n) - 0.5)/n
         }
     }
-    return(sapply(1:d, f))
+    out <- sapply(1:d, f)
+    colnames(out) <- names
+    return(out)
 }
 
 "makeinputfiles" <-
@@ -687,7 +689,7 @@ function (number.of.runs, expert.estimates, gaussian = TRUE,
   
   jj <- interpolant.quick(as.matrix(x), d.noisy, toy, scales=scales.fit,
                           func=func, 
-                          Ainv=Ainv,g=TRUE)
+                          Ainv=Ainv, give.Z=TRUE)
   
   plot(x,jj$mstar.star,xlim=range(x),type="l",col="black",lwd=3, ...)
   lines(x,jj$prior,col="green",type="l")

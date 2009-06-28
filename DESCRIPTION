@@ -1,7 +1,7 @@
 Package: emulator
 Type: Package
 Title: Bayesian emulation of computer programs
-Version: 1.2-2
+Version: 1.2-4
 Date: 28 June 2009
 Author: Robin K. S. Hankin
 Depends: R (>= 2.0.0), mvtnorm
@@ -20,9 +20,9 @@ Description: This package allows one to estimate the output of a
         Bayesian a-postiori estimates of the PDF of the output of a
         model, conditioned on results from previous runs and a
         user-specified prior linear model.  A working example is given
-        in the help page for function `interpolant', which should be
+        in the help page for function `interpolant()', which should be
         the first point of reference.
 License: GPL
-Packaged: 2011-03-10 06:39:30 UTC; rksh
+Packaged: 2011-03-17 07:23:11 UTC; rksh
 Repository: CRAN
-Date/Publication: 2011-03-10 11:14:31
+Date/Publication: 2011-03-18 07:31:47

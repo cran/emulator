@@ -19,7 +19,7 @@
       \%*\% solve(M) \%*\% x} using an efficient method that avoids
     inverting \eqn{M}
     
-    \item Function \code{quad.3form()} returns \eqn{l^TMr}{t(l) \%*'\% M
+    \item Function \code{quad.3form()} returns \eqn{l^TMr}{t(l) \%*\% M
       \%*\% r} using nested calls to \code{crossprod()}.  It's no faster
     than calling \code{crossprod()} directly, but makes code neater
     (IMHO)
