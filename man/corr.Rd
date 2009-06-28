@@ -14,11 +14,11 @@ corr.matrix(xold, yold=NULL, method=1, distance.function=corr, ...)
 \arguments{
   \item{x1}{First point}
   \item{x2}{Second point}
-  \item{scales}{Vector specifying the diagonal elements of B (see below)}
+  \item{scales}{Vector specifying the diagonal elements of \eqn{B} (see below)}
   \item{pos.def.matrix}{Positive definite matrix to be used by
-    \code{corr.matrix()} for B.  Exactly one of \code{scales} and
+    \code{corr.matrix()} for \eqn{B}.  Exactly one of \code{scales} and
     \code{pos.definite.matrix} should be specified.  Supplying
-    \code{scales} specifies the diagonal elements of B (off diagonal
+    \code{scales} specifies the diagonal elements of \eqn{B} (off diagonal
     elements are set to zero); supply \code{pos.definite.matrix} in the
     general case.  A single value is recycled.   Note that neither
     \code{corr()} nor \code{corr.matrix()} test for positive

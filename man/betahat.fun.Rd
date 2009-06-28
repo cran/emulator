@@ -36,7 +36,7 @@ betahat.fun.A(xold, A, d, give.variance=FALSE, func)
 \note{
   Here, the strategy of using two separate functions, eg \code{foo()}
   and \code{foo.A()}, one of which inverts \code{A} and one of which
-  uses notionally more efficient means.    Compare the other
+  uses notionally more efficient means.  Compare the other
   strategy in which a Boolean flag, \code{use.Ainv}, has the same
   effect.  An example would be \code{scales.likelihood()}.
 }

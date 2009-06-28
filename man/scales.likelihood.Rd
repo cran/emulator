@@ -13,18 +13,18 @@ use.Ainv = TRUE, d, func = regressor.basis)
   \item{pos.def.matrix}{Positive definite matrix used for the distance metric}
   \item{scales}{If the positive definite matrix is diagonal, 
     \code{scales} specifies the diagonal elements.  Specify exactly one
-    of \code{pos.def.matrix} or \code{scales} (ie not both)}.
+    of \code{pos.def.matrix} or \code{scales} (ie not both)}
   \item{xold}{Points at which code has been run}
   \item{use.Ainv}{Boolean, with default \code{TRUE} meaning to calculate
     \eqn{A^{-1}}{A^(-1)} explicitly and use it.  Setting to \code{FALSE}
       means to use methods (such as \code{quad.form.inv()}) which do not
       require inverting the \code{A} matrix.  Although one should avoid
       inverting a matrix if possible, in practice there does not appear
-      to be much difference in execution time for the two methods.}
+      to be much difference in execution time for the two methods}
   \item{d}{Observations}
   \item{power}{Power to use in metric}
   \item{func}{Function used to determine basis vectors, defaulting
-    to \code{regressor.basis} if not given.}
+    to \code{regressor.basis} if not given}
 }
 \details{
 This function returns the likelihood function defined in Oakley's PhD

@@ -121,7 +121,7 @@ plot(x,jj$mstar.star,xlim=range(x),type="l",col="black",lwd=3)
 lines(x,jj$prior,col="green",type="l")
 lines(x,jj$mstar.star+jj$Z,type="l",col="red",lty=2)
 lines(x,jj$mstar.star-jj$Z,type="l",col="red",lty=2)
-points(toy,d.noisy,pch=16,cex=5)
+points(toy,d.noisy,pch=16,cex=2)
 legend("topright",lty=c(1:2,0),col=c("black","red","green","black"),pch=c(NA,NA,NA,16),legend=c("best estimate","+/- 1sd","prior","training set"))
 
 
