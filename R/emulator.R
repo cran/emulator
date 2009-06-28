@@ -454,7 +454,7 @@ function (x)
         return(sum((x - centrepoint)^2))
     }
     else {
-        return(as.real(x[1] < x[2]))
+        return(as.double(x[1] < x[2]))
     }
 }
 
