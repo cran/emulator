@@ -68,7 +68,15 @@ corr.matrix(xold, yold=NULL, method=1, distance.function=corr, ...)
     \code{scales}}
 }
 \details{
-  Evaluates a slight generalization of Oakley's equation 2.12 for the
+
+  Function \code{corr()} calculates the correlation between two points
+  \code{x1} and \code{x2} in the parameter space.  Function
+  \code{corr.matrix()} calculates the correlation matrix between each
+  row of \code{xold} and \code{yold}.  If \code{yold=NULL} then the
+  correlation matrix between \code{xold} and itself is returned, which
+  should be positive definite.
+  
+  Evaluates Oakley's equation 2.12 for the
   correlation between \eqn{\eta(x)}{eta(x)} and \eqn{\eta(x')}{eta(x')}:
   \eqn{e^{-(x-x')^TB(x-x')}}{exp(-(x-x')^T B (x-x'))}.
   }
@@ -106,32 +114,40 @@ Returns the correlation function
   \eqn{i}-th dimension) will result in small correlations.  If
   \code{scales[i]} is small, even large displacements in \code{x[1]}
   will have large correlations}
+
 \author{Robin K. S. Hankin}
 \examples{
-corr(1:10,10:1,scales=rep(1,10))
-corr(1:10,10:1,pos.def.matrix=0.1+diag(10))
-x <- latin.hypercube(4,7)  #4 points in 7-dimensional space
+
+jj <- latin.hypercube(2,10)
+x1 <- jj[1,]
+x2 <- jj[2,]
+
+corr(x1,x2,scales=rep(1,10))             # correlation between 2 points
+corr(x1,x2,pos.def.matrix=0.1+diag(10))  # see effect of offdiagonal elements
+
+x <- latin.hypercube(4,7)                # 4 points in 7-dimensional space
+rownames(x) <- letters[1:4]              # name the points
+
 corr.matrix(x,scales=rep(1,7))
 
-x[1,1] <- 100
+x[1,1] <- 100                            # make the first point far away
 corr.matrix(x,scales=rep(1,7))
 
+# note that all the first row and first column apart from element [1,1]
+# is zero (or very nearly so) because the first point is now very far
+# from the other points and has zero correlation with them.
 
-# note that all the first row and first column apart from the [1,1]th
-# element is zero (or very nearly so) because point number 1 is now very
-# far from the other points.
-
-#to use just a single dimension, remember to use the drop=FALSE argument:
+# To use just a single dimension, remember to use the drop=FALSE argument:
 corr.matrix(x[,1,drop=FALSE],scales=rep(1,1))
 
 
 # For problems in 1D, coerce the independent variable to a matrix:
-m <- c(0.2 , 0.4,0.403,0.9)
+m <- c(0.2, 0.4, 0.403, 0.9)
 corr.matrix(cbind(m),scales=1)
 
 
 # now use a non-default value for distance.function.
-# Function f() below taken from Oakley's thesis page 12,
+# Function f() below taken from Jeremy Oakley's thesis page 12,
 # equation 2.10:
 
 f <- function(x,y,theta){
@@ -144,10 +160,10 @@ f <- function(x,y,theta){
 }
 
 
-corr.matrix(xold=x, distance.function=f , method=2, theta=4)
+corr.matrix(xold=x, distance.function=f, method=2, theta=4)
 
- # Note the first row and first column is a single 1 and 3 zeroes
- # (because the first point, viz x[1,], is "far" from the other ponts).
+ # Note the first row and first column is a single 1 and 3 zeros
+ # (because the first point, viz x[1,], is "far" from the other points).
  # Also note the method=2 argument here; method=1 is the fast slick
  # matrix method suggested by Doug and Jeremy, but this only works
  # for distance.function=corr.

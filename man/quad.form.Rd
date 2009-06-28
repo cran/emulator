@@ -3,45 +3,77 @@
 \alias{quad.form.inv}
 \alias{quad.3form}
 \alias{quad.tform}
+\alias{quad.3tform}
 \alias{quad.tform.inv}
+\alias{cprod}
+\alias{tcprod}
+\alias{ht}
 \title{Evaluate a quadratic form efficiently}
 \description{
   
   Given a square matrix \eqn{M} of size \eqn{n\times n}{n*n}, and a
   matrix \eqn{x} of size \eqn{n\times p}{n*p} (or a vector of length
   \eqn{n}), evaluate various quadratic forms.
+
+  (in the following, \eqn{x^T}{t(x)} denotes the complex conjugate of
+  the transpose, also known as the Hermitian transpose.  This only
+  matters when considering complex numbers).
   
   \itemize{
-    \item Function \code{quad.form()} evaluates \eqn{x^TMx}{t(x)
+    \item Function \code{quad.form(M,x)} evaluates \eqn{x^TMx}{t(x)
       \%*\% M \%*\% x} in an efficient manner
     
-    \item Function \code{quad.form.inv()} returns \eqn{x^TM^{-1}x}{t(x)
+    \item Function \code{quad.form.inv(M,x)} returns \eqn{x^TM^{-1}x}{t(x)
       \%*\% solve(M) \%*\% x} using an efficient method that avoids
     inverting \eqn{M}
     
-    \item Function \code{quad.3form()} returns \eqn{l^TMr}{t(l) \%*\% M
-      \%*\% r} using nested calls to \code{crossprod()}.  It's no faster
-    than calling \code{crossprod()} directly, but makes code neater
-    (IMHO)
-    
-    \item Function \code{quad.tform()} returns \eqn{xMx^T}{x \%*\% A \%*\%
-      t(x)} using \code{tcrossprod()} in such a way as to not take a
-    transpose
+    \item Function \code{quad.tform(M,x)} returns \eqn{xMx^T}{x \%*\% A
+      \%*\% t(x)} using \code{tcrossprod()} without taking
+      a transpose
 
-    \item Function \code{quad.tform.inv()} returns \eqn{xM^{-1}x^T}{x
-      \%*\% solve(M) \%*\% t(x)}, although a single transpose is needed 
-  }
+    \item Function \code{quad.tform.inv(M,x)} returns \eqn{xM^{-1}x^T}{x
+      \%*\% solve(M) \%*\% t(x)}, although a single transpose is needed
+
+    \item Function \code{quad.3form(M,l,r)} returns \eqn{l^TMr}{t(l)
+      \%*\% M \%*\% r} using nested calls to \code{crossprod()}.  It's
+      no faster than calling \code{crossprod()} directly, but makes code
+      neater and less error-prone (IMHO)
+    
+    \item Function \code{quad.3tform(M,l,r)} returns \eqn{lMr^T}{l \%*\%
+      M \%*\% t(r)} using nested calls to \code{tcrossprod()}.  Again,
+      this is to make for neater code.  }
+    
+  These functions invoke the following lower-level calls:
+  
+  \itemize{
+    \item Function \code{ht(x)} returns the Hermitian transpose, that is,
+    the complex conjugate of the transpose, sometimes written \eqn{x^*}
+
+    \item Function \code{cprod(x,y)} returns \eqn{x^T y}{t(x) \%*\% y},
+    equivalent to \code{crossprod(Conj(x),y)}
+    
+    \item Function \code{tcprod(x,y)} returns \eqn{x y^T}{x \%*\% t(y)},
+    equivalent to \code{crossprod(x,Conj(y))} }
+   
+  Note again that in the calls above, \dQuote{transpose} [that is,
+  \eqn{x^T}{t(x)}] means \dQuote{Conjugate transpose}, or the Hermitian
+  transpose.
+  
 }
 \usage{
 quad.form(M, x, chol=FALSE)
 quad.form.inv(M, x)
 quad.tform(M, x)
 quad.3form(M,left,right)
+quad.3tform(M,left,right)
 quad.tform.inv(M,x)
+cprod(x,y)
+tcprod(x,y)
+ht(x)
 }
 \arguments{
   \item{M}{Square matrix of size \eqn{n\times n}{n*n}}
-  \item{x}{Matrix of size \eqn{n\times p}{n*p}, or vector of length \eqn{n}}
+  \item{x,y}{Matrix of size \eqn{n\times p}{n*p}, or vector of length \eqn{n}}
   \item{chol}{Boolean, with \code{TRUE} meaning to interpret
     argument \code{M} as the lower triangular Cholesky decomposition
     of the quadratic form.  Remember that 
@@ -65,9 +97,13 @@ quad.tform.inv(M,x)
 
 }
 \author{Robin K. S. Hankin}
-\note{These functions are used extensively in the emulator and
-  calibrator packages' R code in the interests
-  of speed.  They are not really intended for the end user.
+
+\note{
+  These functions are used extensively in the emulator and
+  calibrator packages' R code, primarily in the interests of elegant
+  code, but also speed.  For the problems I usually consider, the
+  speedup (of \code{quad.form(M,x)} over \code{t(x)\%*\% M \%*\% x},
+  say) is marginal at best
 }
 \seealso{\code{\link{optimize}}}
 \examples{

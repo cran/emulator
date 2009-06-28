@@ -1,7 +1,7 @@
 Package: emulator
 Type: Package
 Title: Bayesian emulation of computer programs
-Version: 1.2-4
+Version: 1.2-8
 Date: 28 June 2009
 Author: Robin K. S. Hankin
 Depends: R (>= 2.0.0), mvtnorm
@@ -23,6 +23,6 @@ Description: This package allows one to estimate the output of a
         in the help page for function `interpolant()', which should be
         the first point of reference.
 License: GPL
-Packaged: 2011-03-17 07:23:11 UTC; rksh
+Packaged: 2011-07-19 21:55:30 UTC; rksh
 Repository: CRAN
-Date/Publication: 2011-03-18 07:31:47
+Date/Publication: 2011-08-11 06:59:08

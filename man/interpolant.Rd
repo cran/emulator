@@ -16,7 +16,7 @@
 \usage{
 interpolant(x, d, xold, Ainv=NULL, A=NULL, use.Ainv=TRUE, scales=NULL, pos.def.matrix=NULL,
 func=regressor.basis, give.full.list = FALSE, distance.function=corr, ...)
-interpolant.quick(x, d, xold, Ainv, scales=NULL,
+interpolant.quick(x, d, xold, Ainv=NULL, scales=NULL,
 pos.def.matrix=NULL, func=regressor.basis, give.Z = FALSE,
 distance.function=corr, ...)
 int.qq(x, d, xold, Ainv, pos.def.matrix, func=regressor.basis)
@@ -30,7 +30,7 @@ int.qq(x, d, xold, Ainv, pos.def.matrix, func=regressor.basis)
     function is known}
   \item{A}{Correlation matrix \code{A}.  If not given, it is calculated}
   \item{Ainv}{Inverse of correlation matrix \code{A}.  Required by
-    \code{interpolant.quick()} and \code{int.qq()}.  In \code{interpolant()},
+    \code{int.qq()}.  In \code{interpolant()} and \code{interpolant.quick()}
     using the default value of \code{NULL} results in \code{Ainv} being
     calculated explicitly (which may be slow: see next argument for more
     details)}

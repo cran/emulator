@@ -234,7 +234,7 @@ return(as.vector(out))
 }
 
 "interpolant.quick" <-
-function (x, d, xold, Ainv, scales = NULL, pos.def.matrix = NULL, 
+function (x, d, xold, Ainv=NULL, scales = NULL, pos.def.matrix = NULL, 
     func = regressor.basis, give.Z = FALSE, distance.function=corr, ...) 
 {
     if (is.null(scales) & is.null(pos.def.matrix)) {
@@ -246,6 +246,11 @@ function (x, d, xold, Ainv, scales = NULL, pos.def.matrix = NULL,
     if (is.null(pos.def.matrix)) {
         pos.def.matrix <- diag(scales,nrow=length(scales))
     }
+    if (is.null(Ainv)){
+      Ainv <- solve(corr.matrix(xold=xold,pos.def.matrix=pos.def.matrix))
+    }
+      
+    
     betahat <- betahat.fun(xold, Ainv, d, func = func)
     H <- regressor.multi(xold, func = func)
     mstar.star <- rep(NA, nrow(x))
@@ -554,48 +559,12 @@ function (H, Ainv, d, b0 = NULL, B0 = NULL)
     return(b)
 }
 
-"quad.form" <-
-function (M, x, chol = FALSE) 
-{
-    if (chol == FALSE) {
-        return(drop(crossprod(crossprod(M, x), x)))
-    }
-    else {
-        jj <- crossprod(M, x)
-        return(drop(crossprod(jj, jj)))
-    }
-}
-
-"quad.form.inv" <-
-function (M, x) 
-{
-    drop(crossprod(x, solve(M, x)))
-}
-
-"quad.3form" <-
-function(M,left,right)
-{
-  crossprod(crossprod(M,left),right)
-}  
-
-"quad.tform" <-
-function(M,x)
-{  
-  tcrossprod(tcrossprod(x,M),x)
-}
-
-
-"quad.tform.inv" <-
-function(M,x){
-  drop(quad.form.inv(M,t(x)))
-}
-
 "tr" <-
 function (a) 
 {
     i <- 1:nrow(a)
     return(sum(a[cbind(i, i)]))
-}
+}  
 
 "regressor.basis" <-
 function (x) 
