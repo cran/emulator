@@ -3,7 +3,7 @@ function (xold, Ainv, d, give.variance = FALSE, func = regressor.basis)
 {
     H <- regressor.multi(xold, func = func)
     H <- as.matrix(H)
-    out <- solve(quad.form(Ainv, H), crossprod(crossprod(Ainv, 
+    out <- solve(quad.form(Ainv, H), cprod(cprod(Ainv, 
         H), d))
     out <- as.vector(out)
     names(out) <- colnames(H)
@@ -22,7 +22,7 @@ function (xold, A, d, give.variance = FALSE, func = regressor.basis)
     H <- regressor.multi(xold, func = func)
     H <- as.matrix(H)
     colnames(H)[1] <- "constant"
-    out <- solve(quad.form.inv(A, H), crossprod(H, solve(A, d)))
+    out <- solve(quad.form.inv(A, H), cprod(H, solve(A, d)))
     out <- as.vector(out)
     names(out) <- rownames(H)
     if (give.variance) {
@@ -106,8 +106,8 @@ function (xold, yold = NULL, method = 1, distance.function = corr,
       S1 <- kronecker(t(jj(R1)),rep(1,nrow(yold)))
       S2 <- kronecker(jj(R2),t(rep(1,nrow(xold))))
 
-      a1 <- crossprod(txold, pos.def.matrix) %*% tyold
-      a2 <- crossprod(tyold, pos.def.matrix) %*% txold
+      a1 <- cprod(txold, pos.def.matrix) %*% tyold
+      a2 <- cprod(tyold, pos.def.matrix) %*% txold
       return(exp(t(a1)+a2-S1-S2))
     } else if (identical(method,2)){
       out <- apply(xold, 1, function(y) {
@@ -175,9 +175,9 @@ function (x, d, xold, Ainv = NULL, A = NULL, use.Ainv = TRUE,
         Ainv <- solve(A)
     }
 #    tx <- apply(xold, 1, distance.function, x2 = x, pos.def.matrix = pos.def.matrix, ...)
-    tx <- drop(corr.matrix(xold=xold, yold=t(x),
+    tx <- Conj(drop(corr.matrix(xold=xold, yold=t(x),
                       distance.function=distance.function,
-                      pos.def.matrix = pos.def.matrix, ...))
+                      pos.def.matrix = pos.def.matrix, ...)))
     hx <- unlist(func(x))
     H <- regressor.multi(xold, func = func)
     if (use.Ainv) {
@@ -188,12 +188,12 @@ function (x, d, xold, Ainv = NULL, A = NULL, use.Ainv = TRUE,
         beta.var <- jj$variance
         sigmahat.square <- jj$sigmahatsquared
         beta.marginal.sd <- sqrt(diag(beta.var))
-        prior <- crossprod(hx,betahat)
-        mstar.star <- prior + crossprod(crossprod(Ainv, 
+        prior <- cprod(hx,betahat)
+        mstar.star <- prior + cprod(cprod(Ainv, 
             tx), d - H %*% betahat)
         cstar.x.x <- corr(x, x, pos.def.matrix = pos.def.matrix, ...) - quad.form(Ainv, tx)
         cstar.star <- cstar.x.x + quad.form.inv(quad.form(Ainv, 
-            H), hx - crossprod(H, crossprod(Ainv, tx)))
+            H), hx - Conj(cprod(H, cprod(Ainv, tx))))
     }
     else {
         n <- nrow(A)
@@ -203,13 +203,13 @@ function (x, d, xold, Ainv = NULL, A = NULL, use.Ainv = TRUE,
         sigmahat.square <- jj$sigmahatsquared
         beta.var <- jj$variance
         beta.marginal.sd <- sqrt(diag(beta.var))
-        prior <- drop(crossprod(hx,betahat))
-        mstar.star <- drop(prior + crossprod(solve(A, 
+        prior <- drop(cprod(hx,betahat))
+        mstar.star <- drop(prior + cprod(solve(A, 
             tx), d - H %*% betahat))
         cstar.x.x <- corr(x, x, pos.def.matrix = pos.def.matrix, 
             ...) - quad.form.inv(A, tx)
         cstar.star <- cstar.x.x + quad.form.inv(quad.form.inv(A, 
-            H), hx - crossprod(H, solve(A, tx)))
+            H), hx - Conj(cprod(H, solve(A, tx))))
     }
     if (give.full.list) {
         return(list(betahat = betahat, prior = prior,
@@ -226,10 +226,10 @@ function (x, d, xold, Ainv = NULL, A = NULL, use.Ainv = TRUE,
 "int.qq" <- function(x, d, xold, Ainv, pos.def.matrix, func=regressor.basis){
   bhat <- betahat.fun(xold,Ainv,d,func=func)
   out <- 
-    crossprod(apply(x,1,func),bhat) + 
-      crossprod(
-                crossprod(Ainv,corr.matrix(x,xold,pos.def.matrix=pos.def.matrix)),
-                d-crossprod(apply(xold,1,func), bhat))
+    cprod(apply(x,1,func),bhat) + 
+      cprod(
+                cprod(Ainv,corr.matrix(x,xold,pos.def.matrix=pos.def.matrix)),
+                d-cprod(apply(xold,1,func), bhat))
 return(as.vector(out))
 }
 
@@ -270,14 +270,14 @@ function (x, d, xold, Ainv=NULL, scales = NULL, pos.def.matrix = NULL,
                                     ...
                                     )
                         )
-        prior[i] <- crossprod(hx,betahat)
+        prior[i] <- cprod(hx,betahat)
 
-        mstar.star[i] <- prior[i] + crossprod(crossprod(Ainv, 
+        mstar.star[i] <- prior[i] + cprod(cprod(Ainv, 
             tx), (d - H %*% betahat))
         if (give.Z) {
             cstar.x.x <- 1 - quad.form(Ainv, tx)
             cstar.star <- cstar.x.x + quad.form.inv(quad.form(Ainv, 
-                H), hx - crossprod(H, crossprod(Ainv, tx)))
+                H), hx - Conj(cprod(H, cprod(Ainv, tx))))
             Z[i] <- sqrt(abs(sigmahat.square * cstar.star))
         }
     }
@@ -311,7 +311,7 @@ function (x, xold, d, A, Ainv, scales = NULL, pos.def.matrix = NULL,
     corr.matrix(xold=x,yold=xold,distance.function=distance.function,
     pos.def.matrix=pos.def.matrix, ...)
     bit1 <- quad.form(Ainv,txvec)
-    jj <- hx - crossprod(txvec,Ainv) %*% H
+    jj <- hx - cprod(txvec,Ainv) %*% H
     bit2 <- quad.form.inv(quad.form(Ainv,H),t(jj))
     
     cstar <- corr.matrix(xold=x,pos.def.matrix=pos.def.matrix,
@@ -550,10 +550,10 @@ function (H, Ainv, d, b0 = NULL, B0 = NULL)
 {
     B <- prior.B(H, Ainv, B0)
     if (is.null(b0)) {
-        b <- crossprod(solve(B), crossprod(H, Ainv)) %*% d
+        b <- cprod(solve(B), cprod(H, Ainv)) %*% d
     }
     else {
-        b <- solve(B) %*% (B0 %*% b0 + crossprod(H, Ainv) %*% 
+        b <- solve(B) %*% (B0 %*% b0 + cprod(H, Ainv) %*% 
             d)
     }
     return(b)
@@ -715,7 +715,7 @@ function (H, Ainv, d)
     q <- ncol(H) 
     H <- as.matrix(H)
     out <- quad.form(Ainv - quad.form.inv(quad.form(Ainv, H), 
-        crossprod(H, Ainv)), d)/(n - q - 2)
+        cprod(H, Ainv)), d)/(n - q - 2)
     return(out)
 }
 "sigmahatsquared.A" <-
