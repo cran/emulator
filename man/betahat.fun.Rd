@@ -61,7 +61,7 @@ d <- apply(H,1,function(x){sum((0:6)*x)})
 
 
 fish <- rep(2,6)
-A <- corr.matrix(val,scales=fish, power=2)
+A <- corr.matrix(val,scales=fish)
 Ainv <- solve(A)
 
 # now add suitably correlated Gaussian noise:
@@ -101,7 +101,7 @@ interpolant(x.unknown, d.noisy, val, Ainv, scales=fish)
 val <- latin.hypercube(100,6)
 colnames(val) <- letters[1:6]
 d <- apply(val,1,function(x){sum((1:6)*x)})
-A <- corr.matrix(val,scales=rep(1,6), power=1.5)
+A <- corr.matrix(val,scales=rep(1,6))
 Ainv <- solve(A)
 
     

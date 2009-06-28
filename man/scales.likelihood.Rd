@@ -6,8 +6,8 @@ Gives the a postiori likelihood for the roughness parameters as a
 function of the observations.
 }
 \usage{
-scales.likelihood(pos.def.matrix = NULL, scales = NULL, power, xold,
-use.Ainv = TRUE, d, func = regressor.basis)
+scales.likelihood(pos.def.matrix = NULL, scales = NULL, xold,
+use.Ainv = TRUE, d, give_log=TRUE, func = regressor.basis)
 }
 \arguments{
   \item{pos.def.matrix}{Positive definite matrix used for the distance metric}
@@ -17,13 +17,16 @@ use.Ainv = TRUE, d, func = regressor.basis)
   \item{xold}{Points at which code has been run}
   \item{use.Ainv}{Boolean, with default \code{TRUE} meaning to calculate
     \eqn{A^{-1}}{A^(-1)} explicitly and use it.  Setting to \code{FALSE}
-      means to use methods (such as \code{quad.form.inv()}) which do not
-      require inverting the \code{A} matrix.  Although one should avoid
-      inverting a matrix if possible, in practice there does not appear
-      to be much difference in execution time for the two methods}
-  \item{d}{Observations}
-  \item{power}{Power to use in metric}
-  \item{func}{Function used to determine basis vectors, defaulting
+    means to use methods (such as \code{quad.form.inv()}) which do not
+    require inverting the \code{A} matrix.  Although one should avoid
+    inverting a matrix if possible, in practice there does not appear
+    to be much difference in execution time for the two methods}
+  \item{d}{Observations in the form of a vector with entries
+    corresponding to the rows of \code{xold}}
+  \item{give_log}{Boolean, with default \code{TRUE} meaning to return
+    the logarithm of the likelihood (ie the support) and \code{FALSE}
+    meaning to return the likelihood itself}
+    \item{func}{Function used to determine basis vectors, defaulting
     to \code{regressor.basis} if not given}
 }
 \details{
@@ -41,7 +44,7 @@ The value returned is
 
 }
 \value{
-Returns the likelihood.
+Returns the likelihood or support.
 }
 \note{
   This function uses a Boolean flag, \code{use.Ainv}, to determine
@@ -77,7 +80,7 @@ Returns the likelihood.
  #Some scales:
  fish <- rep(1,6)
  fish[6] <- 4
- A <- corr.matrix(val,scales=fish, power=2)
+ A <- corr.matrix(val,scales=fish)
  Ainv <- solve(A)
 
  # Gaussian process noise:
@@ -86,20 +89,18 @@ Returns the likelihood.
  d.noisy <- as.vector(rmvnorm(n=1,mean=d, 0.1*A))
 
  # Compare likelihoods with true values and another value:
- scales.likelihood(scales=rep(1,6),xold=toy,d=d.noisy, power=2)
- scales.likelihood(scales=fish    ,xold=toy,d=d.noisy, power=2)
+ scales.likelihood(scales=rep(1,6),xold=toy,d=d.noisy)
+ scales.likelihood(scales=fish    ,xold=toy,d=d.noisy)
 
 
  # Verify that use.Ainv does not affect the numerical result:
-u.true <- scales.likelihood(scales=rep(1,6),xold=toy,d=d.noisy, power=2,
-use.Ainv=TRUE)
-u.false <- scales.likelihood(scales=rep(1,6),xold=toy,d=d.noisy, power=2,
-use.Ainv=FALSE)
+u.true  <- scales.likelihood(scales=rep(1,6),xold=toy,d=d.noisy,use.Ainv=TRUE)
+u.false <- scales.likelihood(scales=rep(1,6),xold=toy,d=d.noisy,use.Ainv=FALSE)
 print(c(u.true, u.false))  # should be identical up to numerical accuracy
 
 
  # Now use optim():
- f <- function(fish){scales.likelihood(scales=exp(fish), xold=toy, d=d.noisy, power=2)}
+ f <- function(fish){scales.likelihood(scales=exp(fish), xold=toy, d=d.noisy)}
  e <-
 optim(log(fish),f,method="Nelder-Mead",control=list(trace=0,maxit=10,fnscale=
 -1))

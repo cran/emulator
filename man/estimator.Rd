@@ -13,7 +13,7 @@ correlation using boot methods.
 }
 \usage{
 estimator(val, A, d, scales=NULL, pos.def.matrix=NULL,
-func=regressor.basis, power=2)
+func=regressor.basis)
 }
 \arguments{
   \item{val}{Design matrix with rows corresponding to points at which the
@@ -30,7 +30,6 @@ func=regressor.basis, power=2)
   \item{pos.def.matrix}{Positive definite matrix \eqn{B}{B}}.
   \item{func}{Function used to determine basis vectors, defaulting
     to \code{regressor.basis} if not given.}
-  \item{power}{Exponent in exponential}
   }
 \details{
 Given a matrix of observation points and a vector of observations,
@@ -78,13 +77,13 @@ d <- apply(val,1,function(x){sum((1:6)*x)})
 
 #pick some scales:
 fish <- rep(1,ncol(val))
-A <- corr.matrix(val,scales=fish, power=2)
+A <- corr.matrix(val,scales=fish)
 
 #add some suitably correlated noise:
 d <- as.vector(rmvnorm(n=1, mean=d, 0.1*A))
 
 # estimate d using the leave-out-one technique in estimator():
-d.est <- estimator(val, A, d, scales=fish, power=2)
+d.est <- estimator(val, A, d, scales=fish)
 
 #and plot the result:
 lims <- range(c(d,d.est))

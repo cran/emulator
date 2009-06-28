@@ -16,7 +16,7 @@ a six-dimensional space.}
      fish <- rep(2,6)
 
      # Calculate the A matrix:
-     A <- corr.matrix(toy,scales=fish , power=1.5)
+     A <- corr.matrix(toy,scales=fish)
      Ainv <- solve(A)
 
      # Now add some suitably correlated noise:

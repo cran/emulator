@@ -8,7 +8,7 @@ space, thus determining the correlation matrix A.
 }
 \usage{
 corr(x1, x2, scales=NULL , pos.def.matrix=NULL,
-power=2,coords="cartesian", spherical.distance.function=NULL)
+coords="cartesian", spherical.distance.function=NULL)
 corr.matrix(xold, yold=NULL, method=1, distance.function=corr, ...)
 }
 \arguments{
@@ -23,16 +23,6 @@ corr.matrix(xold, yold=NULL, method=1, distance.function=corr, ...)
     general case.  A single value is recycled.   Note that neither
     \code{corr()} nor \code{corr.matrix()} test for positive
     definiteness}
-  \item{power}{In function \code{corr()}, the power to use in the
-    exponent of the exponential.  In
-    the case of a diagonal \code{pos.def.matrix} (or,
-    equivalently, using \code{scales}), the default value of 2 gives the
-    standard metric, viz \eqn{e^{-(x-x')^2}}{exp(-(x-x')^2)}.
-
-    For the general case of nondiagonal \code{pos.def.matrix},
-    the metric is \eqn{e^{-\left| (x-x')^TB(x-x')\right|^{\rm
-    power/2}}}{exp(-abs( (x-x')^T B (x-x') )^(power/2))}, thus reducing
-    to the standard case for \code{power}=2}
   \item{coords}{In function \code{corr()}, a character string, with
     default \dQuote{cartesian} meaning to interpret the elements of
     \code{x1} (and \code{x2}) as coordinates in Cartesian space.  The
@@ -48,22 +38,18 @@ corr.matrix(xold, yold=NULL, method=1, distance.function=corr, ...)
     fast matrix calculation that returns
     \eqn{e^{-(x-x')^TB(x-x')}}{exp(-(x-x')^T B (x-x'))}.  If 2 or 3, return
     the appropriate output from \code{corr()}, noting that ellipsis
-    arguments are passed to \code{corr()} (for example, \code{power} and
+    arguments are passed to \code{corr()} (for example, 
     \code{scales}).  The difference between 2 and 3 is a marginal
     difference in numerical efficiency; the main difference is
     computational elegance.
     
-    \strong{Warning 1:} if \code{method=1}, argument \code{power} (which
-    might be intended to be passed to \code{corr.matrix()}) is ignored
-    silently.
-    
-    \strong{Warning 2:} The code for \code{method=2} (formerly the
+    \strong{Warning 1:} The code for \code{method=2} (formerly the
     default), has a bug.  If \code{yold} has only one row, then
     \code{corr.matrix(xold,yold,scales,method=2)} returns the transpose
     of what one would expect.  Methods 1 and 3 return the correct
     matrix.
 
-    \strong{Warning 3:} If argument \code{distance.function} is not the
+    \strong{Warning 2:} If argument \code{distance.function} is not the
     default, and \code{method} is the default (ie 1), then \code{method}
     will be silently changed to 2 on the grounds that \code{method=1} is
     meaningless unless the distance function is \code{corr()}} 
@@ -79,14 +65,12 @@ corr.matrix(xold, yold=NULL, method=1, distance.function=corr, ...)
   \item{...}{In function \code{corr.matrix()}, extra arguments that are
     passed on to the distance function.  In the default case in which
     the distance.function is \code{corr()}, one \emph{must} pass
-    \code{scales}, and one might wish to pass \code{power}}
+    \code{scales}}
 }
 \details{
   Evaluates a slight generalization of Oakley's equation 2.12 for the
   correlation between \eqn{\eta(x)}{eta(x)} and \eqn{\eta(x')}{eta(x')}:
-  \eqn{e^{-\left| (x-x')^TB(x-x')\right|^{\rm power/2}}}{exp(|(x-x')^T B
-    (x-x')|^({power/2))}}.
-  This reduces to Oakley's form if \code{power=2}.
+  \eqn{e^{-(x-x')^TB(x-x')}}{exp(-(x-x')^T B (x-x'))}.
   }
 \value{
 Returns the correlation function
@@ -124,13 +108,13 @@ Returns the correlation function
   will have large correlations}
 \author{Robin K. S. Hankin}
 \examples{
-corr(1:10,10:1,scales=rep(1,10), power=2)
-corr(1:10,10:1,pos.def.matrix=0.1+diag(10),power=2)
+corr(1:10,10:1,scales=rep(1,10))
+corr(1:10,10:1,pos.def.matrix=0.1+diag(10))
 x <- latin.hypercube(4,7)  #4 points in 7-dimensional space
-corr.matrix(x,scales=rep(1,7),power=1.5)
+corr.matrix(x,scales=rep(1,7))
 
 x[1,1] <- 100
-corr.matrix(x,scales=rep(1,7), power=1.5)
+corr.matrix(x,scales=rep(1,7))
 
 
 # note that all the first row and first column apart from the [1,1]th
@@ -138,7 +122,7 @@ corr.matrix(x,scales=rep(1,7), power=1.5)
 # far from the other points.
 
 #to use just a single dimension, remember to use the drop=FALSE argument:
-corr.matrix(x[,1,drop=FALSE],scales=rep(1,1),power=1.5)
+corr.matrix(x[,1,drop=FALSE],scales=rep(1,1))
 
 
 # For problems in 1D, coerce the independent variable to a matrix:

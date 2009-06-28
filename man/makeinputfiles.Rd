@@ -98,12 +98,12 @@ scales.optim <- exp(c( -2.63, -3.03, -2.24, 2.61,
 -4.40, -0.81))
 
 d  <- results.table[wanted.row ,  output.col]
-A <- corr.matrix(val, scales=scales.optim, power=1.5)
+A <- corr.matrix(val, scales=scales.optim)
 Ainv <- solve(A)
 
 x <- sample.from.exp.est(1000,exp=expert.estimates)
 x <- t(apply(x,1,normalize))
-ensemble <- interpolant.quick(x , d , val , Ainv, scales=scales.optim, power=1.5) 
+ensemble <- interpolant.quick(x , d , val , Ainv, scales=scales.optim) 
 hist(ensemble)
 }
 

@@ -41,7 +41,7 @@ d <- apply(val,1,function(x){sum((1:6)*x)})
 #add some noise:
 d <- jitter(d)
 
-A <- corr.matrix(val,scales=rep(1,ncol(val)), power=1.5)
+A <- corr.matrix(val,scales=rep(1,ncol(val)))
 Ainv <- solve(A)
 H <- regressor.multi(val)
 

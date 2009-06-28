@@ -137,7 +137,7 @@ d <- apply(H,1,real.relation)
 fish <- rep(1,6)
 fish[6] <- 4
 
-A <- corr.matrix(val,scales=fish, power=2)
+A <- corr.matrix(val,scales=fish)
 Ainv <- solve(A)
 
 # now add some suitably correlated noise to d:
@@ -279,19 +279,19 @@ d  <- results.table[wanted.row ,  output.col]
 scales.optim <- exp(c( -2.917, -4.954, -3.354, 2.377, -2.457, -1.934, -3.395,
 -0.444, -1.448, -3.075, -0.052, -2.890, -2.832, -2.322, -3.092, -1.786))
 
-A <- corr.matrix(val,scales=scales.optim, method=2, power=1.5)
+A <- corr.matrix(val,scales=scales.optim, method=2)
 Ainv <-  solve(A)
 
 print("and plot points used in optimization:")
 d.observed <- results.table[ , output.col]
 
-A <- corr.matrix(val,scales=scales.optim, method=2, power=1.5)
+A <- corr.matrix(val,scales=scales.optim, method=2)
 Ainv <- solve(A)
 
 print("now plot all points:")
 design.normalized <- as.matrix(t(apply(results.table[,wanted.cols],1,normalize)))
 d.predicted <- interpolant.quick(design.normalized , d , val , Ainv=Ainv,
-scales=scales.optim, power=1.5)
+scales=scales.optim)
 jj <- range(c(d.observed,d.predicted))
 par(pty="s")
 plot(d.observed, d.predicted, pch=16, asp=1,

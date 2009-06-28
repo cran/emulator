@@ -40,7 +40,7 @@ d <- apply(H,1,function(x){sum((0:6)*x)})
 
 
 # create A matrix and its inverse:
-A <- corr.matrix(val,scales=rep(1,ncol(val)), power=1.5)
+A <- corr.matrix(val,scales=rep(1,ncol(val)))
 Ainv <- solve(A)
 
 # add some suitably correlated noise:

@@ -107,7 +107,7 @@ d.noisy <- as.vector(toy>0.5)+rnorm(length(toy))/40
 
 fish <- 100
 x <- seq(from=-1,to=2,len=1000)
-A <- corr.matrix(toy,scales=fish, power=2)
+A <- corr.matrix(toy,scales=fish)
 Ainv <- solve(A)
 
  ## Now the interpolation.  Change func.chosen() from func1() to func2()

@@ -111,7 +111,7 @@ fish <- rep(1,6)
 fish[6] <- 4
 
      # And determine A and Ainv:
-A <- corr.matrix(val,scales=fish, power=2)
+A <- corr.matrix(val,scales=fish)
 Ainv <- solve(A)
 
      # and add some suitably correlated Gaussian noise:

@@ -55,7 +55,7 @@ H <- regressor.multi(val,func=regressor.basis)
  fish <- c(1,1,1,1,1,4)
 
 ## A and Ainv
-A <- corr.matrix(as.matrix(val),scales=fish,power=2)
+A <- corr.matrix(as.matrix(val),scales=fish)
 Ainv <- solve(A)
 
 ## a real relation; as used in helppage for interpolant:

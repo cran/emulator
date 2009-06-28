@@ -35,7 +35,7 @@ function (xold, A, d, give.variance = FALSE, func = regressor.basis)
     }
 }
 "corr" <-
-function (x1, x2, scales = NULL, pos.def.matrix = NULL, power = 2, 
+function (x1, x2, scales = NULL, pos.def.matrix = NULL, 
     coords = "cartesian", spherical.distance.function = NULL) 
 {
     if (is.null(scales) & is.null(pos.def.matrix)) {
@@ -49,18 +49,14 @@ function (x1, x2, scales = NULL, pos.def.matrix = NULL, power = 2,
     }
     x1 <- as.vector(unlist(x1))
     x2 <- as.vector(unlist(x2))
-    if (power == 2) {
         corrscale <- function(x) {
             exp(-abs(x))
         }
-    }
-    else {
-        corrscale <- function(x) {
-            exp(-(abs(x))^(power/2))
-        }
-    }
-    m <- switch(coords, cartesian = x1 - x2, spherical = spherical.distance.function(x1, 
-        x2), stop("coords must be either Cartesian or Spherical"))
+    m <- switch(coords,
+                cartesian = x1 - x2,
+                spherical = spherical.distance.function(x1, x2),
+                stop("coords must be either Cartesian or Spherical")
+                )
     return(corrscale(quad.form(pos.def.matrix, m)))
 }
 "corr.matrix" <-
@@ -140,7 +136,7 @@ function (xold, yold = NULL, method = 1, distance.function = corr,
 }
 
 "estimator" <-
-function (val, A, d, scales = NULL, pos.def.matrix = NULL, func=regressor.basis, power = 2) 
+function (val, A, d, scales = NULL, pos.def.matrix = NULL, func=regressor.basis) 
 {
     d.missing.estimated <- d + NA
     for (i in 1:nrow(val)) {
@@ -152,7 +148,7 @@ function (val, A, d, scales = NULL, pos.def.matrix = NULL, func=regressor.basis,
         Ainv.oneshort <- solve(A.oneshort)
         d.missing.estimated[i] <- interpolant(val.missing, d.oneshort, 
             val.oneshort, Ainv = Ainv.oneshort, scales = scales, 
-            pos.def.matrix = pos.def.matrix, func=func, power = power, g = TRUE)$mstar.star
+            pos.def.matrix = pos.def.matrix, func=func, g = TRUE)$mstar.star
     }
     return(d.missing.estimated)
 }
@@ -228,7 +224,7 @@ function (x, d, xold, Ainv = NULL, A = NULL, use.Ainv = TRUE,
 }
 
 "int.qq" <- function(x, d, xold, Ainv, pos.def.matrix, func=regressor.basis){
-  bhat <- betahat.fun(xold,Ainv,d)
+  bhat <- betahat.fun(xold,Ainv,d,func=func)
   out <- 
     crossprod(apply(x,1,func),bhat) + 
       crossprod(
@@ -460,12 +456,9 @@ function (val, scales.start, d, use.like = TRUE, give.answers = FALSE, func=regr
     ...) 
 {
     if (use.like) {
-      initial.value <-
-        scales.likelihood(scales=scales.start, xold=val, d=d, func=func)
-      
         objective.fun <- function(scales, val, d) {
             -scales.likelihood(scales = exp(scales), xold = val, 
-                d = d, func=func)/(initial.value)
+                d = d, give_log=TRUE, func=func)
         }
     }
     else {
@@ -496,7 +489,7 @@ function (val, d, use.like = TRUE, give.answers = FALSE,  func=regressor.basis,
     if (use.like) {
         objective.fun <- function(scale, val, d) {
             out <- -scales.likelihood(scales = rep(exp(scale),n), xold = val, 
-                d = d, func=func)
+                d = d, give_log=TRUE, func=func)
         }
     }
     else {
@@ -705,8 +698,8 @@ function (number.of.runs, expert.estimates, gaussian = TRUE,
 }
 
 "scales.likelihood" <-
-function (pos.def.matrix = NULL, scales = NULL, power = 2, xold,
-          use.Ainv = TRUE, d, func = regressor.basis) 
+function (pos.def.matrix = NULL, scales = NULL,  xold,
+          use.Ainv = TRUE, d, give_log=TRUE, func = regressor.basis) 
 {
     if (is.null(scales) & is.null(pos.def.matrix)) {
         stop("need either scales or a pos.definite.matrix")
@@ -720,8 +713,7 @@ function (pos.def.matrix = NULL, scales = NULL, power = 2, xold,
     H <- regressor.multi(xold, func = func)
     q <- ncol(H) 
     n <- nrow(H)
-    A <- corr.matrix(xold=xold, pos.def.matrix = pos.def.matrix, power =
-                     power)
+    A <- corr.matrix(xold=xold, pos.def.matrix = pos.def.matrix)
 
     ## Define a function that returns log(1/sqrt(det(x)))
     f <- function(M){(-0.5) * sum(log(eigen(M,TRUE,TRUE)$values))}
@@ -737,7 +729,12 @@ function (pos.def.matrix = NULL, scales = NULL, power = 2, xold,
       bit1 <- log(sigmahatsquared.A(H, A, d))  * (-(n - q)/2)
       bit3 <- f(quad.form.inv(A, H))
     }
-    return(drop(exp(bit1 + bit2 + bit3)))
+    out <- drop(bit1 + bit2 + bit3)
+    if(give_log){
+      return(out)
+    } else {
+      return(exp(out))
+    }
 }
 
 "sigmahatsquared" <-
