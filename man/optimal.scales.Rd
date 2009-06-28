@@ -103,7 +103,9 @@ d.noisy <-  as.vector(rmvnorm(n=1,mean=apply(val,1,real.relation),REAL.SIGMASQ*A
 
 ##  Now see if we can estimate the roughness lengths well.  Remember that
 ##  the true values are those held in vector "fish":
-optimal.scales(val=val, scales.start=rep(1,6), d=d.noisy, method="SANN",control=list(trace=1000,maxit=3), give=FALSE)
+optimal.scales(val=val, scales.start=rep(1,6), d=d.noisy,
+       method="SANN",control=list(trace=1000,maxit=3),
+       give=FALSE)
 
 
 

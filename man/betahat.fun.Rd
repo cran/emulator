@@ -111,6 +111,11 @@ betahat.fun(val, Ainv, d, func=function(x){c(1,x,x^2)})
 
 
 ## And finally a sanity check:
-betahat.fun(val, Ainv, d, func=function(x){c(1,x,x^2)})-betahat.fun.A(val, A, d, func=function(x){c(1,x,x^2)})
+f <- function(x){c(1,x,x^2)}
+jj1 <- betahat.fun(val, Ainv, d, func=f)
+jj2 <- betahat.fun.A(val, A, d, func=f)
+
+abs(jj1-jj2)  # should be small
+
 }
 \keyword{models}

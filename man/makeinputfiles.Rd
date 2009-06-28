@@ -13,8 +13,10 @@
 }
 \usage{
 makeinputfiles(number.of.runs = 100, gaussian = TRUE,
-directoryname="~/goldstein/genie-cgoldstein/", filename="QWERTYgoin", expert.estimates, area.outside=0.05)
-sample.from.exp.est(number.of.runs, expert.estimates, gaussian=TRUE, area.outside=0.05)
+   directoryname="~/goldstein/genie-cgoldstein/", filename="QWERTYgoin",
+   expert.estimates, area.outside=0.05)
+sample.from.exp.est(number.of.runs, expert.estimates,
+   gaussian=TRUE, area.outside=0.05)
 }
 \arguments{
   \item{number.of.runs}{Number of condor runs to generate}
@@ -91,7 +93,7 @@ jj <- t(apply(val,1,normalize))
 
 jj <- as.data.frame(jj)
 names(jj) <- names(val)
-val <- jj
+val <- as.matrix(jj)
 
 scales.optim <- exp(c( -2.63, -3.03, -2.24, 2.61,
 -1.65, -3.13, -3.52, 3.16, -3.32, -2.53, -0.25,  -2.55, -4.98, -1.59,

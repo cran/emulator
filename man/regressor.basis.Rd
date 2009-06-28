@@ -122,7 +122,9 @@ lines(x,jj$prior,col="green",type="l")
 lines(x,jj$mstar.star+jj$Z,type="l",col="red",lty=2)
 lines(x,jj$mstar.star-jj$Z,type="l",col="red",lty=2)
 points(toy,d.noisy,pch=16,cex=2)
-legend("topright",lty=c(1:2,0),col=c("black","red","green","black"),pch=c(NA,NA,NA,16),legend=c("best estimate","+/- 1sd","prior","training set"))
+legend("topright",lty=c(1:2,0),
+    col=c("black","red","green","black"),pch=c(NA,NA,NA,16),
+    legend=c("best estimate","+/- 1sd","prior","training set"))
 
 
   ## Now we will use O&O 2002.
@@ -144,7 +146,9 @@ Ainv.augmented <- solve(A.augmented)
 
 f <- function(...){
 
-ddash <- cond.sample(n=1, x=xdash, xold=toy, d=d.noisy, A=A, Ainv=Ainv, scales=fish,func=func.chosen)
+ddash <- cond.sample(n=1, x=xdash, xold=toy, d=d.noisy, A=A,
+                           Ainv=Ainv, scales=fish, func=func.chosen)
+
         jj.aug <-
           interpolant.quick(x      = as.matrix(x),
                             d      = c(d.noisy,as.vector(ddash)),

@@ -93,12 +93,12 @@ function (xold, yold = NULL, method = 1, distance.function = corr,
       }
       jj <- function(x){as.matrix(diag(as.matrix(x)))}
       if(nully){
-        R <- quad.form(pos.def.matrix, t(xold))
+        R <- quad.tform(pos.def.matrix, xold)
         S <- kronecker(jj(R),t(rep(1,nrow(xold))))
-        return(exp(2*R-S-t(S)))
+        return(exp(Re(R+t(R)-S-t(S))))  #sic
       }
-      txold <- t(xold)
-      tyold <- t(yold)
+      txold <- ht(xold)
+      tyold <- ht(yold)
       R1 <- quad.form(pos.def.matrix,txold)
       R2 <- quad.form(pos.def.matrix,tyold)
       
@@ -108,7 +108,7 @@ function (xold, yold = NULL, method = 1, distance.function = corr,
 
       a1 <- cprod(txold, pos.def.matrix) %*% tyold
       a2 <- cprod(tyold, pos.def.matrix) %*% txold
-      return(exp(t(a1)+a2-S1-S2))
+      return(exp(Re(t(a1)+a2-S1-S2)))
     } else if (identical(method,2)){
       out <- apply(xold, 1, function(y) {
         apply(yold, 1, function(x) {
@@ -716,7 +716,7 @@ function (H, Ainv, d)
     H <- as.matrix(H)
     out <- quad.form(Ainv - quad.form.inv(quad.form(Ainv, H), 
         cprod(H, Ainv)), d)/(n - q - 2)
-    return(out)
+    return(Re(out))
 }
 "sigmahatsquared.A" <-
 function (H, A, d) 

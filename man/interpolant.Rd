@@ -14,8 +14,9 @@
   assumptions.
 }
 \usage{
-interpolant(x, d, xold, Ainv=NULL, A=NULL, use.Ainv=TRUE, scales=NULL, pos.def.matrix=NULL,
-func=regressor.basis, give.full.list = FALSE, distance.function=corr, ...)
+interpolant(x, d, xold, Ainv=NULL, A=NULL, use.Ainv=TRUE,
+      scales=NULL, pos.def.matrix=NULL, func=regressor.basis,
+      give.full.list = FALSE, distance.function=corr, ...)
 interpolant.quick(x, d, xold, Ainv=NULL, scales=NULL,
 pos.def.matrix=NULL, func=regressor.basis, give.Z = FALSE,
 distance.function=corr, ...)
@@ -49,7 +50,7 @@ int.qq(x, d, xold, Ainv, pos.def.matrix, func=regressor.basis)
 
     If \code{Ainv} is not available, there is little to choose, in terms
     of execution time, between calculating it explicitly (that is,
-    setting \code{use.Ainv=TRUE}) and using \code{solve(A,x)} (ie
+    setting \code{use.Ainv=TRUE}), and using \code{solve(A,x)} (ie
     \code{use.Ainv=TRUE}).
     
     \strong{Note:} if \code{Ainv} is given to the function, but
