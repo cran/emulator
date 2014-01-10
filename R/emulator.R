@@ -347,8 +347,16 @@ jj.sigma <- var.conditional(x, xold, d, A, Ainv, scales = scales, pos.def.matrix
 }
 
 "latin.hypercube" <-
-function (n, d, names=NULL, normalize = FALSE) 
+function (n, d, names=NULL, normalize = FALSE, complex=FALSE) 
 {
+    if(complex){
+        out <- Recall(n,2*d, normalize=normalize, complex=FALSE)
+        out <- out[,seq_len(d)] + 1i*out[,-seq_len(d)]
+        colnames(out) <- names
+        return(out)
+    }
+
+        
     if (normalize) {
         f <- function(...) {
             sample(0:(n - 1))/(n - 1)

@@ -1,10 +1,10 @@
 Package: emulator
 Type: Package
 Title: Bayesian emulation of computer programs
-Version: 1.2-13
-Date: 28 June 2009
+Version: 1.2-15
+Date: 10 January 2014
 Author: Robin K. S. Hankin
-Depends: R (>= 2.10), mvtnorm
+Depends: R (>= 3.0.1), mvtnorm
 Maintainer: Robin K. S. Hankin <hankin.robin@gmail.com>
 Description: 
  This package allows one to estimate the output of a computer program,
@@ -16,13 +16,13 @@ Description:
  output at that point.  The emphasis is on complex codes that take
  weeks or months to run, and that have a large number of undetermined
  input parameters; many climate prediction models fall into this
- class.  The emulator essentially determines Bayesian a-posteriori
+ class.  The emulator essentially determines Bayesian posterior
  estimates of the PDF of the output of a model, conditioned on results
  from previous runs and a user-specified prior linear model.  A 
  working example is given in the help page for function `interpolant()',
  which should be the first point of reference.
 License: GPL
-Packaged: 2013-12-02 19:15:57 UTC; rhankin
+Packaged: 2014-09-08 03:51:21 UTC; rhankin
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-12-02 21:30:19
+Date/Publication: 2014-09-08 06:58:23

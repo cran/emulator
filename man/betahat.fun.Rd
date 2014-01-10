@@ -74,12 +74,12 @@ betahat.fun(val , Ainv , d)           # should be close to c(0,1:6)
 betahat.fun(val,Ainv,give.variance=TRUE, d)
 
 
-     # now find the value of the a priori expectation (ie the regression
+     # now find the value of the prior expectation (ie the regression
      # plane) at an unknown point:
 x.unknown <- rep(0.5 , 6)
 regressor.basis(x.unknown) \%*\% betahat.fun(val, Ainv, d)
 
-     # compare the a-priori with the a-postiori:
+     # compare the prior with the posterior
 interpolant(x.unknown, d, val, Ainv,scales=fish)
      # Heh, it's the same!  (of course it is, there is no error here!)
 

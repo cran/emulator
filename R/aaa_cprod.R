@@ -65,8 +65,31 @@ function(M,x)
  tcprod(tcprod(x,M),x)
 }
 
-
 "quad.tform.inv" <-
 function(M,x){
  drop(quad.form.inv(M,ht(x)))
 }
+
+"quad.diag" <- 
+function(M,x){   # algebraically, diag(quad.form(M,x))
+    colSums( cprod(M,x) * Conj(x))
+}
+
+"quad.tdiag" <-
+function(M,x){   # algebraically, diag(quad.tform(M,x))
+    rowSums( tcprod(x,M) * Conj(x))
+}
+
+#"cmahal" <- 
+#    function (z, center, cov, inverted = FALSE, ...) 
+#{
+#    if(is.vector(z)){
+#        z <- matrix(z, ncol = length(z))
+#    } else {
+#        z <- as.matrix(x)
+#    }
+#    
+#    if (!inverted) { cov <- solve(cov, ...)}
+#    quad.diag(cov,sweep(z, 2, center))
+#}
+

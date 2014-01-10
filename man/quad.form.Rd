@@ -5,6 +5,8 @@
 \alias{quad.tform}
 \alias{quad.3tform}
 \alias{quad.tform.inv}
+\alias{quad.diag}
+\alias{quad.tdiag}
 \alias{cprod}
 \alias{tcprod}
 \alias{ht}
@@ -36,12 +38,20 @@
 
     \item Function \code{quad.3form(M,l,r)} returns \eqn{l^TMr}{t(l)
       \%*\% M \%*\% r} using nested calls to \code{crossprod()}.  It's
-      no faster than calling \code{crossprod()} directly, but makes code
-      neater and less error-prone (IMHO)
+    no faster than calling \code{crossprod()} directly, but makes code
+    neater and less error-prone (IMHO)
     
     \item Function \code{quad.3tform(M,l,r)} returns \eqn{lMr^T}{l \%*\%
       M \%*\% t(r)} using nested calls to \code{tcrossprod()}.  Again,
-      this is to make for neater code.  }
+    this is to make for neater code
+    
+    \item Function \code{quad.diag(M,x)} returns the \emph{diagonal} of
+    the (potentially very large) square matrix \code{quad.form(M,x)}
+    without calculating the off diagonal elements
+    
+    \item Function \code{quad.tdiag(M,x)} similarly returns the diagonal of
+    \code{quad.tform(M,x)}
+  }
     
   These functions invoke the following lower-level calls:
   
@@ -67,6 +77,8 @@ quad.tform(M, x)
 quad.3form(M,left,right)
 quad.3tform(M,left,right)
 quad.tform.inv(M,x)
+quad.diag(M,x)
+quad.tdiag(M,x)
 cprod(x,y)
 tcprod(x,y)
 ht(x)
@@ -102,7 +114,7 @@ ht(x)
   These functions are used extensively in the emulator and
   calibrator packages' R code, primarily in the interests of elegant
   code, but also speed.  For the problems I usually consider, the
-  speedup (of \code{quad.form(M,x)} over \code{t(x)\%*\% M \%*\% x},
+  speedup (of \code{quad.form(M,x)} over \code{t(x) \%*\% M \%*\% x},
   say) is marginal at best
 }
 \seealso{\code{\link{optimize}}}
@@ -119,10 +131,29 @@ print(jj.1)
 print(jj.2)
 print(jj.3)
 
+
+
+
+## Make two Hermitian positive-definite matrices:
+L <- matrix(c(1,0.1i,-0.1i,1),2,2)
+LL <- diag(11)
+LL[2,1] <- -(LL[1,2] <- 0.1i)
+
+
+z <- t(latin.hypercube(11,2,complex=TRUE))
+
+
+quad.diag(L,z)     # elements real because L is HPD
+quad.tdiag(LL,z)   # ditto
+
+
+
+
 ## Now consider accuracy:
 quad.form(solve(M),x) - quad.form.inv(M,x)  # should be zero
-
-quad.form(M,x) - quad.tform(M,t(x)) # Should be zero
-
+quad.form(M,x) - quad.tform(M,t(x))         # should be zero
+quad.diag(M,x) - diag(quad.form(M,x))       # should be zero
+diag(quad.form(L,z))   - quad.diag(L,z)     # should be zero
+diag(quad.tform(LL,z)) - quad.tdiag(LL,z)   # should be zero
 }
 \keyword{array}

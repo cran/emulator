@@ -4,7 +4,7 @@
 \alias{int.qq}
 \title{Interpolates between known points using Bayesian estimation}
 \description{
-  Calculates the a postiori distribution of results at a point using the
+  Calculates the posterior distribution of results at a point using the
   techniques outlined by Oakley.  Function \code{interpolant()} is the
   primary function of the package.  Function \code{interpolant.quick()}
   gives the expectation of the emulator at a set of points, and function
@@ -59,7 +59,7 @@ int.qq(x, d, xold, Ainv, pos.def.matrix, func=regressor.basis)
   \item{func}{Function used to determine basis vectors, defaulting
     to \code{regressor.basis} if not given}
   \item{give.full.list}{In \code{interpolant()}, Boolean variable with
-    \code{TRUE} meaning to return the whole list of a postiori
+    \code{TRUE} meaning to return the whole list of posterior
     parameters as detailed on pp12-15 of Oakley, and default \code{FALSE}
     meaning to return just the best estimate}
 
@@ -98,10 +98,10 @@ int.qq(x, d, xold, Ainv, pos.def.matrix, func=regressor.basis)
   \item{betahat}{Standard MLE of the (linear) fit, given the
     observations}
   \item{prior}{Estimate for the prior}
-  \item{sigmahat.square}{A postiori estimate for variance}
-  \item{mstar.star}{A postiori expectation}
-  \item{cstar}{a priori correlation of a point with itself}
-  \item{cstar.star}{A postiori correlation of a point with itself}
+  \item{sigmahat.square}{Posterior estimate for variance}
+  \item{mstar.star}{Posterior expectation}
+  \item{cstar}{Prior correlation of a point with itself}
+  \item{cstar.star}{Posterior correlation of a point with itself}
   \item{Z}{Standard deviation (although the distribution is actually a
     t-distribution with \eqn{n-q} degrees of freedom)}
 }
@@ -134,6 +134,7 @@ val <- toy
 real.relation <- function(x){sum( (0:6)*x )}
 H <- regressor.multi(val)
 d <- apply(H,1,real.relation)
+d <- jitter(d,amount=1e-5)    # to prevent numerical problems
 
 fish <- rep(1,6)
 fish[6] <- 4
