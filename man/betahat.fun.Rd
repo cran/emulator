@@ -4,8 +4,8 @@
 \title{Calculates MLE coefficients of linear fit}
 \description{
 
-  Determines the MLE (least squares) regression coeffients for the
-  specified regression basis.
+  Determines the maximum likelihood regression coeffients for the
+  specified regression basis and correlation matrix~\code{A}.
 
   The \dQuote{\code{.A}} form needs only \code{A} (and not \code{Ainv}),
   thus removing the need to calculate a matrix inverse.  Note that this
@@ -29,7 +29,7 @@ betahat.fun.A(xold, A, d, give.variance=FALSE, func)
   \item{d}{Vector of results at the points specified in \code{xold}}
   \item{give.variance}{Boolean, with \code{TRUE} meaning to return
     information on the variance of \eqn{\hat{\beta}}{betahat} and
-    default \code{FALSE} meaning to return just the least squares estimator}
+    default \code{FALSE} meaning to return just the estimator}
   \item{func}{Function to generate regression basis; defaults to \code{regressor.basis}}
 }
 
