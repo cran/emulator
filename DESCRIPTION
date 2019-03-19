@@ -1,9 +1,8 @@
 Package: emulator
 Type: Package
 Title: Bayesian Emulation of Computer Programs
-Version: 1.2-19
-Date: 2019-01-15
-Author: Robin K. S. Hankin
+Version: 1.2-20
+Authors@R: person(given=c("Robin", "K. S."), family="Hankin", role = c("aut","cre"), email="hankin.robin@gmail.com", comment = c(ORCID = "0000-0001-5982-0415"))
 VignetteBuilder: knitr
 Depends: R (>= 3.0.1), mvtnorm
 Suggests: knitr
@@ -26,6 +25,7 @@ License: GPL
 URL: https://github.com/RobinHankin/emulator.git
 BugReports: https://github.com/RobinHankin/emulator/issues
 NeedsCompilation: no
-Packaged: 2019-01-15 04:09:04 UTC; rhankin
+Packaged: 2019-03-19 19:20:27 UTC; rhankin
+Author: Robin K. S. Hankin [aut, cre] (<https://orcid.org/0000-0001-5982-0415>)
 Repository: CRAN
-Date/Publication: 2019-01-15 05:40:09 UTC
+Date/Publication: 2019-03-19 20:30:14 UTC
