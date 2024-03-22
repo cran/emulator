@@ -9,8 +9,7 @@ library("emulator")
 ###################################################
 ### code chunk number 2: datagen_design_matrix
 ###################################################
-n <- 30
-val.vig <- latin.hypercube(n,2)
+val.vig <- as.matrix(read.table("val.txt",header=TRUE))
 
 
 ###################################################
@@ -23,12 +22,10 @@ nrow(val.vig)
 ###################################################
 ### code chunk number 4: basisvig
 ###################################################
-basis.vig <- 
-function (x) 
-{
-        out <- c(1, x , x[1]*x[2])
-        names(out) <- c("const", LETTERS[1:2], "interaction")
-        return(out)
+basis.vig <-  function (x){
+ out <- c(1, x , x[1]*x[2])
+ names(out) <- c("const", LETTERS[1:2], "interaction")
+ return(out)
 }
 
 
@@ -41,13 +38,14 @@ REAL.SIGMASQUARED <- 0.3
 
 A <- corr.matrix(xold=val.vig,scales=REAL.SCALES)
 
-z.vig  <- 
+z.vig.synthetic  <- 
 as.vector(rmvnorm(n=1,mean=crossprod(REAL.BETA,apply(val.vig,1,basis.vig)),sigma=A*REAL.SIGMASQUARED))
 
 
 ###################################################
 ### code chunk number 6: headzvig
 ###################################################
+z.vig <- scan("z.txt")
 head(z.vig)
 summary(z.vig)
 
@@ -88,7 +86,7 @@ xold=val.vig, func=basis.vig, give.full.list=TRUE)
 ## 
 ## A <- corr.matrix(xold=val.vig,scales=REAL.SCALES)
 ## 
-## z.vig  <- 
+## z.vig.synthetic  <- 
 ## as.vector(rmvnorm(n=1,mean=crossprod(REAL.BETA,apply(val.vig,1,basis.vig)),sigma=A*REAL.SIGMASQUARED))
 
 
